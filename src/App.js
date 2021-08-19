@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
 
-function App() {
+const BUTTONS = [1, 2, 3];
+
+const App = () => {
+  const [mainBtn, setMainBtn] = useState(1);
+  const [isShowButtons, setIsShowButtons] = useState(false);
+  const [rowButtons, setRowButtons] = useState(BUTTONS);
+
+  const handleClickBtn = () => {
+    setIsShowButtons((prev) => (!rowButtons.length ? true : !prev));
+    if (!rowButtons.length) {
+      setRowButtons(BUTTONS);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="wrapper">
+      <button onClick={handleClickBtn}>{mainBtn}</button>
+
+      {isShowButtons &&
+        rowButtons.map((item) => (
+          <button
+            key={item}
+            onClick={() => {
+              setMainBtn(item);
+              setRowButtons((prev) => prev.filter((btn) => btn !== item));
+            }}
+          >
+            {item}
+          </button>
+        ))}
     </div>
   );
-}
+};
 
 export default App;
